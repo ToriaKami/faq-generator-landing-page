@@ -260,7 +260,7 @@ const csvFileInput = document.getElementById('csvFile');
 
         try {
           // IMPORTANT: Make sure this URL matches the one in your submit handler below!
-          const response = await fetch('https://n8n.liftflows.com/webhook/faq-forge-batch', {
+          const response = await fetch('https://n8n.liftflows.com/webhook-test/faq-forge-batch', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -320,7 +320,7 @@ const csvFileInput = document.getElementById('csvFile');
       try {
         // 🎯 THIS IS WHERE THE MAGIC HAPPENS
         // Replace with your actual n8n webhook URL
-        const response = await fetch('https://n8n.liftflows.com/webhook/faq-forge-batch', {
+        const response = await fetch('https://n8n.liftflows.com/webhook-test/faq-forge-batch', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
