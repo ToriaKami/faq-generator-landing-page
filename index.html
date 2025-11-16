@@ -113,19 +113,19 @@
     <form id="faqForm">
       <!-- Single URL Mode -->
       <div class="form-group">
-        <label for="page_url">Page URL *</label>
+        <label for="page_url">Page URL</label>
         <input 
           type="url" 
           id="page_url" 
           name="page_url" 
-      
+          
           placeholder="https://example.com/product-page"
         >
         <div class="helper-text">The page where you'll add the FAQ schema</div>
       </div>
 
       <div class="form-group">
-        <label for="seed_keyword">Target Keyword *</label>
+        <label for="seed_keyword">Target Keyword</label>
         <input 
           type="text" 
           id="seed_keyword" 
@@ -192,8 +192,7 @@
           max="15"
         >
       </div>
-<!-- ... other form fields like 'desired_faq_count' ... -->
-
+      
       <div class="form-group">
         <label for="csvFile">Or Upload CSV (Batch Mode)</label>
         <input 
@@ -207,7 +206,7 @@
       </div>
 
       <button type="submit" id="submitBtn">
-        Generate FAQ Schema
+        Generate FAQ Schema (Single URL)
       </button>
       
     </form>
@@ -236,7 +235,7 @@
     const loading = document.getElementById('loading');
     const successMessage = document.getElementById('successMessage');
     const errorMessage = document.getElementById('errorMessage');
-const csvFileInput = document.getElementById('csvFile');
+    const csvFileInput = document.getElementById('csvFile');
 
     csvFileInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -259,8 +258,8 @@ const csvFileInput = document.getElementById('csvFile');
         const csvData = event.target.result;
 
         try {
-          // IMPORTANT: Make sure this URL matches the one in your submit handler below!
-          const response = await fetch('https://n8n.liftflows.com/webhook-test/faq-forge-batch', {
+          // IMPORTANT: Make sure this URL is your PRODUCTION URL for the live version
+          const response = await fetch('https://n8n.liftflows.com/webhook/faq-forge-batch', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -293,8 +292,24 @@ const csvFileInput = document.getElementById('csvFile');
       };
       reader.readAsText(file);
     });
+    
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      // ==========================================================
+      // ===== THIS IS THE NEW CODE THAT FIXES THE CONFLICT =====
+      // ==========================================================
+      // If the user has selected a file, the 'change' event listener 
+      // for the CSV file will handle it. We should not proceed with 
+      // the single URL submission.
+      if (csvFileInput.files.length > 0) {
+        alert('A CSV file is selected. That will be processed automatically. To submit a single URL instead, please remove the file first.');
+        return; // Stop the function here
+      }
+      // ==========================================================
+      // ================= END OF NEW CODE ========================
+      // ==========================================================
+
 
       // Hide previous messages
       successMessage.style.display = 'none';
@@ -318,9 +333,8 @@ const csvFileInput = document.getElementById('csvFile');
       };
 
       try {
-        // 🎯 THIS IS WHERE THE MAGIC HAPPENS
-        // Replace with your actual n8n webhook URL
-        const response = await fetch('https://n8n.liftflows.com/webhook-test/faq-forge-batch', {
+        // IMPORTANT: Make sure this URL is your PRODUCTION URL for the live version
+        const response = await fetch('https://n8n.liftflows.com/webhook/faq-forge-batch', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
