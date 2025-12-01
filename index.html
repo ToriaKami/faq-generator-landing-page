@@ -175,13 +175,6 @@
       </div>
 
       <div class="form-group">
-        <label for="pasted_paa_text">Manual PAA Questions (Optional)</label>
-        <textarea id="pasted_paa_text" name="pasted_paa_text" rows="4"
-          placeholder="Paste 'People Also Ask' questions here (one per line or separated by semicolons)"></textarea>
-        <div class="helper-text">If you don't have a SerpAPI key, paste Google PAA questions manually</div>
-      </div>
-
-      <div class="form-group">
         <label for="desired_faq_count">Number of FAQs</label>
         <input type="number" id="desired_faq_count" name="desired_faq_count" value="8" min="3" max="15">
       </div>
@@ -303,7 +296,6 @@
         user_email: document.getElementById('user_email').value,
         target_country: document.getElementById('target_country').value,
         language: 'en',
-        pasted_paa_text: document.getElementById('pasted_paa_text').value || null,
         desired_faq_count: parseInt(document.getElementById('desired_faq_count').value),
         premium_mode: false
       };
@@ -321,7 +313,7 @@
 
         if (response.ok && result.success) {
           loading.style.display = 'none';
-          successMessage.style.display = 'block';
+          successMessage.style.display = 'none';
           document.getElementById('batchId').textContent = result.batch_id || result.timestamp || 'N/A';
           form.reset();
         } else {
